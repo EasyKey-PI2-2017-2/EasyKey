@@ -7,8 +7,22 @@ from base.forms import SignupForm
 
 
 def home(request):
-    return render(request, 'base.html')
+    if request.user.is_authenticated():
+        return render(request, 'copy/step1.html')
+    else:
+        return render(request, 'copy/step0.html')
 
+def step1(request):
+    return render(request, 'copy/step1.html')
+
+def step2(request):
+    return render(request, 'copy/step2.html')
+
+def step3(request):
+    return render(request, 'copy/step3.html')
+
+def step4(request):
+    return render(request, 'copy/step4.html')
 
 def signup(request):
     if request.method == 'POST':
