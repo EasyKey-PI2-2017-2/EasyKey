@@ -1,6 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script>
+function stop() {
+    alert("A maquina parou");
+}
+function move() {
+    var elem = document.getElementById("myBar");
+    var width = 1;
+    var id = setInterval(frame, 10);
+    function frame() {
+        if (width >= 100) {
+            clearInterval(id);
+        } else {
+            width++;
+            elem.style.width = width + '%';
+        }
+    }
+}
+</script>
 <div class="container">
   <div class="row">
     <fieldset>
@@ -14,8 +32,7 @@
         </div>
       </div>
       <a href="{% url 'step4' %}" class="btn btn-primary btn-lg btn-success">CORTAR</a>
-      <a href="{% url 'step2' %}" class="btn btn-primary btn-lg btn-danger">PARAR CORTE</a>
-
+      <a onclick="stop()" class="btn btn-primary btn-lg panel-primary">PARAR CORTE</a>
     </fieldset>
   </div>
 </div>
