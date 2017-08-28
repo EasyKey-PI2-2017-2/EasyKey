@@ -7,11 +7,7 @@ from base.forms import SignupForm
 
 
 def home(request):
-    return render(request, 'base.html', {})
-
-
-def login(request):
-    return HttpResponse("Login")
+    return render(request, 'base.html')
 
 
 def signup(request):
@@ -25,5 +21,5 @@ def signup(request):
             login(request, user)
             return redirect('home')
     else:
-        form = UserCreationForm()
+        form = SignupForm()
     return render(request, 'base/signup.html', {'form': form})
