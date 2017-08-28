@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
-
-{% block title %}Login{% endblock %}
-
+{% block title %}Entrar{% endblock %}
 {% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <form class="form-horizontal" method="post">
+        <fieldset>
+          <legend>Entrar</legend>
+          <div class="form-group" method="post">
+            <div class="col-lg-10">
+            {% csrf_token %}
+            {{ form.as_p}}
+            </div>
+            <div class="col-lg-10 col-lg-offset-2">
+              <button type="reset" class="btn btn-default">Limpar</button>
+              <button type="submit" class="btn btn-primary">Entrar</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}
