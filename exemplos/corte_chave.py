@@ -11,14 +11,12 @@ def load():
     imgray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(imgray, (5,5), 0)
 
-    ret,t = cv2.threshold(blur,127,255,0)
-    thresh = cv2.erode(t, None, iterations=1)
+    ret,t_antes = cv2.threshold(blur,127,255,0)
+    t_depois = cv2.erode(t_antes, None, iterations=1)
 
-    image, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,
-                                                  cv2.CHAIN_APPROX_SIMPLE)
-    return (cv2.drawContours(img, contours, -1, (255,255,255), 1), im,
-            contours, t, thresh)
+    return (t_antes, t_depois)
 
 if __name__ == '__main__':
-    img, im, cnt, o, t = load()
-
+    t_antes, t_depois = load()
+    final = (t_antes - t_depois)
+    final = (255-final)
