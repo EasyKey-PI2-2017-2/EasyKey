@@ -6,7 +6,7 @@ import os
 
 def load():
     im = cv2.imread('a2.jpg')
-    os.system('convert a2.jpg -crop 150x315+185+118 +repage cp.jpg')
+    os.system('convert a2.jpg -crop 75x315+185+118 +repage cp.jpg')
     img = cv2.imread('cp.jpg')
     imgray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(imgray, (5,5), 0)
@@ -20,3 +20,4 @@ if __name__ == '__main__':
     t_antes, t_depois = load()
     final = (t_antes - t_depois)
     final = (255-final)
+    cv2.imwrite('dilate-erode.jpg', final)
