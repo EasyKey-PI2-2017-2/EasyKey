@@ -6,23 +6,6 @@ import os
 
 from math import pow, sqrt
 
-
-def load():
-    im = cv2.imread('a3.jpg')
-    imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
-    escala = imgray[140:190, 45:55]
-    chave = imgray[114:433, 190:260]
-
-    blur = cv2.GaussianBlur(chave, (5,5), 0)
-
-    ret,thresh_chave_antes = cv2.threshold(blur,127,255,0)
-    ret,thresh_escala = cv2.threshold(escala,127,255,0)
-
-    thresh_chave_depois = cv2.erode(thresh_chave_antes, None, iterations=1)
-
-    return (thresh_chave_antes, thresh_chave_depois, thresh_escala)
-
-
 def gcode(img, escala):
     f = open('gcode.nc', 'w')
     f.write(g0(0, -2))
@@ -54,8 +37,6 @@ def set_escala(efinal):
                 primeiro = x
             elif pixel == 255 and x > ultimo:
                 ultimo = x
-    import ipdb
-    ipdb.set_trace()
     tamanho = ultimo-primeiro
     return 1/tamanho*3
 
@@ -72,11 +53,22 @@ def g1(referencia, pixel, escala):
     return 'G1 X{} Y{}\n'.format(difx * escala , dify * escala)
 
 if __name__ == '__main__':
-    t_antes, t_depois, t_escala = load()
+    im = cv2.imread('rasp.jpg')
+    imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
+    escala = imgray[60:130, 290:310]
+    chave = imgray[25:152, 405:440]
+
+    blur = cv2.GaussianBlur(chave, (5,5), 0)
+    
+
+    ret,t_antes = cv2.threshold(blur,204,255,cv2.THRESH_BINARY)
+    ret,t_escala = cv2.threshold(escala,188,255,cv2.THRESH_BINARY)
+    
+    t_depois = cv2.erode(t_antes, None, iterations=1)
+    
     cfinal = (t_antes - t_depois)
     cfinal = (255-cfinal)
     efinal = (255-t_escala)
     efinal = efinal.transpose()
-
-    cv2.imwrite('dilate-erode.jpg', cfinal)
-    escala = set_escala(efinal)
+    
+    #escala = set_escala(efinal)
