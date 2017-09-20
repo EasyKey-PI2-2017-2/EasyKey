@@ -21,3 +21,8 @@ if __name__ == '__main__':
     final = (t_antes - t_depois)
     final = (255-final)
     cv2.imwrite('dilate-erode.jpg', final)
+    
+    os.system('convert dilate-erode.jpg dilate-erode.pnm')
+    os.system('mkbitmap dilate-erode.pnm -f 2 -s 2 -t 0.48 -o dilate-erode2.pnm')
+    os.system('potrace dilate-erode2.pnm -s -t 5 -o dilate-erode.svg')
+    
