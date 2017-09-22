@@ -12,18 +12,18 @@
     <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
     <nav class="orange lighten-3" role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="/" class="brand-logo black-text">EasyKey</a>
+        <a id="logo-container" href="/" class="light brand-logo black-text">EasyKey</a>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
               <ul class="right hide-on-med-and-down">
-                  <li><a class="black-text" href="{% url 'logout' %}">Sair</a></li>
+                  <li><a class="light black-text" href="{% url 'logout' %}">Sair</a></li>
             {% else %}
               <ul class="right hide-on-med-and-down">
-                  <li><a class="black-text" href="{% url 'signup' %}">Faça seu cadastro</a></li>
+                  <li><a class="light black-text" href="{% url 'signup' %}">Faça seu cadastro</a></li>
               </ul>
               <ul class="right hide-on-med-and-down">
-                  <li><a class="black-text" href="{% url 'login' %}">Login</a></li>
+                  <li><a class="light black-text" href="{% url 'login' %}">Login</a></li>
               </ul>
             {% endif %}
           </ul>
