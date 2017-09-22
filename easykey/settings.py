@@ -34,10 +34,10 @@ LOGIN_REDIRECT_URL = 'home'
 INSTALLED_APPS = [
     # easykey apps
     'base',
+    'chave',
 
     # third party apps
     'django_extensions',
-
 
     # django apps
     'django.contrib.admin',
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar',]
-    
+
 INTERNAL_IPS = ('127.0.0.1',)
 
 MIDDLEWARE = [
