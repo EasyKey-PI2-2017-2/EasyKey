@@ -2,27 +2,36 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from base.forms import SignupForm
 
 
 def home(request):
     if request.user.is_authenticated():
-        return render(request, 'copy/step1.html')
+        user = User.objects.get(first_name=request.user.first_name)
+        print(user)
+        return render(request, 'copy/key_code.html')
     else:
-        return render(request, 'copy/step0.html')
+        return render(request, 'copy/home.html')
 
-def step1(request):
-    return render(request, 'copy/step1.html')
 
-def step2(request):
-    return render(request, 'copy/step2.html')
+@login_required
+def key_code(request):
+    print(request.user)
+    print(request.method)
+    if request.method == 'POST':
+        error = True
+        return render(request, 'copy/key_code.html', {'error': error})
+    else:
+        return render(request, 'copy/key_code.html')
 
-def step3(request):
-    return render(request, 'copy/step3.html')
+def key_cut(request):
+    return render(request, 'copy/key_cut.html')
 
-def step4(request):
-    return render(request, 'copy/step4.html')
+def key_finish(request):
+    return render(request, 'copy/key_finish.html')
 
 def signup(request):
     if request.method == 'POST':
