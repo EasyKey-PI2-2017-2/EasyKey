@@ -30,10 +30,10 @@
       {% else %}
         <a href="{% url 'key_cut' %}" class="btn-large waves-effect waves-light blue darken-3">Leitura Correta</a>
       {% endif %}
-      <form action="" method="post">
+      <form action="" method="POST">
         {% csrf_token %}
         <br>
-        <button class="btn-large waves-effect waves-light red darken-3" type="submit">Leitura Com Erro</button>
+        <button type="submit" class="btn-large waves-effect waves-light red darken-3">Leitura Com Erro</button>
       </form>
     </fieldset>
   </div>

@@ -1,29 +1,29 @@
-<!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>{% block title %}EasyKey{% endblock %}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
   
   <body>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
     <nav class="orange lighten-3" role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="/" class="brand-logo">EasyKey</a>
+        <a id="logo-container" href="/" class="brand-logo black-text">EasyKey</a>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
               <ul class="right hide-on-med-and-down">
-                  <li><a href="{% url 'logout' %}">Sair</a></li>
+                  <li><a class="black-text" href="{% url 'logout' %}">Sair</a></li>
             {% else %}
               <ul class="right hide-on-med-and-down">
-                  <li><a href="{% url 'signup' %}">Faça seu cadastro</a></li>
+                  <li><a class="black-text" href="{% url 'signup' %}">Faça seu cadastro</a></li>
               </ul>
               <ul class="right hide-on-med-and-down">
-                  <li><a href="{% url 'login' %}">Login</a></li>
+                  <li><a class="black-text" href="{% url 'login' %}">Login</a></li>
               </ul>
             {% endif %}
           </ul>

@@ -4,23 +4,26 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+import datetime
 
 from base.forms import SignupForm
 
-
 def home(request):
     if request.user.is_authenticated():
-        user = User.objects.get(first_name=request.user.first_name)
-        print(user)
-        return render(request, 'copy/key_code.html')
+        return redirect('key_code')
     else:
-        return render(request, 'copy/home.html')
-
+        hour = datetime.datetime.now().strftime('%H');
+        hour = int(hour)
+        if hour >= 0 and hour <= 11:
+            mensagem = "Bom Dia!"
+        elif hour >= 12 and hour <= 17:
+            mensagem = "Boa Tarde!"
+        else:
+            mensagem = "Boa Noite!"
+        return render(request, 'copy/home.html', {'mensagem': mensagem})
 
 @login_required
 def key_code(request):
-    print(request.user)
-    print(request.method)
     if request.method == 'POST':
         error = True
         return render(request, 'copy/key_code.html', {'error': error})
