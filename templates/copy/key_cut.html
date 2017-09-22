@@ -2,7 +2,12 @@
 
 {% block content %}
 <script>
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 function stop() {
+  document.getElementById("barraestatica").style.visibility = 'visible';
+  document.getElementById("barrainterminate").style.visibility = "hidden";
     alert("A maquina parou");
 }
 function move() {
@@ -18,6 +23,16 @@ function move() {
         }
     }
 }
+function cut() {
+    document.getElementById("cortar").style.visibility = "hidden";
+    document.getElementById("parar").style.visibility = 'visible';
+    document.getElementById("barraestatica").style.visibility = "hidden";
+    document.getElementById("barrainterminate").style.visibility = 'visible';
+    sleep(5000).then(() => {
+      // Do something after the sleep!
+      window.location.replace("http://localhost:8080/key_finish/");
+  });  //href="{% url 'key_finish' %}"
+}
 </script>
 <div class="container">
   <div class="card-panel">
@@ -30,16 +45,19 @@ function move() {
         <div class="panel-heading">
           <h3 class="panel-title">Corte da Chave</h3>
         </div>
-        <div class="progress">
+        <div class="progress" id="barraestatica">
+          <div class="determinate" style="width: 0%"></div>
+        </div>
+        <div class="progress" style="visibility: hidden;" id="barrainterminate">
             <div class="indeterminate"></div>
         </div>
         <div class="panel-body">
-            <h5 class="light" style="text-align: left;">Posicione a chave virgem no torno para ser cortada e pressione cortar.</h5>  
+            <h5 class="light" style="text-align: left;">Posicione a chave virgem no torno para ser cortada e pressione cortar.</h5>
         </div>
         <br>
       </div>
-      <a href="{% url 'key_finish' %}" class="btn-large waves-effect waves-light blue darken-3 ">Cortar</a>
-      <a onclick="stop()" class="btn-large waves-effect waves-light red darken-3">Parar Corte</a>
+      <a onclick="cut()"  class="btn-large waves-effect waves-light blue darken-3" id="cortar">Cortar</a>
+      <a onclick="stop()" style="visibility: hidden;" class="btn-large waves-effect waves-light red darken-3" id="parar">Parar Corte</a>
     </fieldset>
   </div>
 </div>
