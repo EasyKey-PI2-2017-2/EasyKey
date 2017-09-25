@@ -17,9 +17,17 @@ function move() {
     function frame() {
         if (width >= 100) {
             clearInterval(id);
+            sleep(2000).then(() => {
+            // Do something after the sleep!
+            window.location.replace("http://localhost:8080/key_finish/");
+          });
         } else {
+          if(document.getElementById("barraestatica").style.visibility != 'visible'){
             width++;
-            elem.style.width = width + '%';
+            document.getElementById("mybar").innerHTML = width+'%';
+          }else {
+            clearInterval(id);
+          }
         }
     }
 }
@@ -28,10 +36,8 @@ function cut() {
     document.getElementById("parar").style.visibility = 'visible';
     document.getElementById("barraestatica").style.visibility = "hidden";
     document.getElementById("barrainterminate").style.visibility = 'visible';
-    sleep(5000).then(() => {
-      // Do something after the sleep!
-      window.location.replace("http://localhost:8080/key_finish/");
-  });  //href="{% url 'key_finish' %}"
+    move();
+ //href="{% url 'key_finish' %}"
 }
 </script>
 <div class="container">
@@ -50,6 +56,9 @@ function cut() {
         </div>
         <div class="progress" style="visibility: hidden;" id="barrainterminate">
             <div class="indeterminate"></div>
+        </div>
+        <div>
+          <a id="mybar">0%</a>
         </div>
         <div class="panel-body">
             <h5 class="light" style="text-align: left;">Posicione a chave virgem no torno para ser cortada e pressione cortar.</h5>
