@@ -51,8 +51,10 @@ def signup(request):
             error = error + "A senha não tem 8 caracteres "
         if len(username) < 1:
             error = error + "Digite o usuário"
+        if password.isdigit():
+            error = error + " A senha possui apenas digitos"
         if len(error) == 0:
-            user = User.objects.create_user(name, username, password)
+            user = User.objects.create_user(username, name, password)
             user.save()
             login(request, user)
             return redirect('home')
