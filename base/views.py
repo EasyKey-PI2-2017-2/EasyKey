@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 
 from base.forms import SignupForm
+from chave.views import GCode
 
 def home(request):
     if request.user.is_authenticated():
@@ -30,6 +31,8 @@ def key_code(request):
         error = True
         return render(request, 'copy/key_code.html', {'error': error})
     else:
+        gc = GCode()
+        gc.carregar_imagens()
         return render(request, 'copy/key_code.html')
 
 def key_cut(request):
