@@ -15,9 +15,15 @@
           <div class="form-group" method="post">
             <div class="col-lg-10">
             {% csrf_token %}
-            <p><label for="id_username" class="active">Usuário:</label> <input type="text" name="username" maxlength="254" id="id_username" autofocus="" required=""></p>
-            <p><label for="id_password">Senha:</label> <input type="password" name="password" id="id_password" required=""></p>
+            <div class="input-field col s12">
+              <input id="username" type="text" class="validate" name="username">
+              <label for="username">Usuário</label>
             </div>
+            <div class="input-field col s12">
+              <input id="password" type="password" class="validate" name="password">
+              <label for="password">Password</label>
+            </div>                
+          </div>
             <div class="row">
                 <div class="col s1"><button type="submit" class="btn-large waves-effect waves-light green darken-2">Entrar</button></div>
                 <div class="col s1 push-s1"><button type="reset" class="btn-large waves-effect waves-light yellow darken-2">Limpar</button></div>

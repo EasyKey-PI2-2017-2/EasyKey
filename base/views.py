@@ -46,13 +46,13 @@ def signup(request):
         passwordVerify = request.POST['password2']
         error = "";
         if passwordVerify != password:
-            error = "As senhas não conferem "
+            error = "- As senhas não conferem "
         if len(password) < 8:
-            error = error + "A senha não tem 8 caracteres "
+            error = error + "- A senha não tem 8 caracteres "
         if len(username) < 1:
-            error = error + "Digite o usuário"
+            error = error + "- Digite o usuário"
         if password.isdigit():
-            error = error + " A senha possui apenas digitos"
+            error = error + "- A senha possui apenas digitos"
         if len(error) == 0:
             user = User.objects.create_user(username, name, password)
             user.save()
@@ -64,7 +64,7 @@ def signup(request):
                 'error_bool': error_bool,
                 'error': error,
             }
-            return render(request, 'base/signup.html',information)
+            return render(request, 'base/signup.html', information)
     else:
         return render(request, 'base/signup.html')
 
@@ -72,7 +72,7 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
