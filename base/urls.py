@@ -6,8 +6,8 @@ from easykey.settings import DEBUG
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
-    url(r'^login/$', auth_views.login, {'template_name': 'base/login.html'}, name='login'),
-    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^login/$', views.login_view, name='login'),
+    url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^key_code/$', views.key_code, name='key_code'),
     url(r'^key_cut/$', views.key_cut, name='key_cut'),
