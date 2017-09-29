@@ -54,10 +54,19 @@ def signup(request):
         if password.isdigit():
             error = error + "- A senha possui apenas digitos"
         if len(error) == 0:
-            user = User.objects.create_user(username, name, password)
-            user.save()
-            login(request, user)
-            return redirect('home')
+            if not User.objects.filter(username = username).exists():
+                user = User.objects.create_user(username, name, password)
+                user.save()
+                login(request, user)
+                return redirect('home')
+            else:
+                error_bool = True
+                error = "Já existe uma conta com esse usuário!"
+                information = {
+                    'error_bool': error_bool,
+                    'error': error,
+                }
+                return render(request, 'base/signup.html', information)
         else:
             error_bool = True
             information = {
