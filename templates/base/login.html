@@ -2,6 +2,11 @@
 {% block title %}Entrar{% endblock %}
 {% block content %}
 <div class="container">
+  {% if error %}
+    <div class="card-panel">
+        <span class="red-text text-darken-2">Usuário ou senha inválidos</span>
+    </div>
+  {% endif %}
   <div class="row">
     <div class="col-lg-4">
       <form class="form-horizontal" method="post">
@@ -10,7 +15,8 @@
           <div class="form-group" method="post">
             <div class="col-lg-10">
             {% csrf_token %}
-            {{ form.as_p}}
+            <p><label for="id_username" class="active">Usuário:</label> <input type="text" name="username" maxlength="254" id="id_username" autofocus="" required=""></p>
+            <p><label for="id_password">Senha:</label> <input type="password" name="password" id="id_password" required=""></p>
             </div>
             <div class="row">
                 <div class="col s1"><button type="submit" class="btn-large waves-effect waves-light green darken-2">Entrar</button></div>

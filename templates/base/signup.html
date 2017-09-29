@@ -10,7 +10,21 @@
           <div class="form-group" method="post">
             <div class="col-lg-10">
               {% csrf_token %}
-              {{ form.as_p }}
+              {% if error_bool %}
+              <div class="card-panel">
+                  <span class="red-text text-darken-2">OCORREU UM ERRO NA LEITURA DA CHAVE</span>
+                  <br>
+                  <span class="red-text text-darken-2">Motivo(s):</span>
+                  <br>
+                  <span class="red-text text-darken-2">{{error}}</span>
+                  <br>
+              </div>
+              {% endif %}
+              <p><label for="id_username">Usuário:</label> <input type="text" name="username" required id="id_username" maxlength="150" autofocus /> <span class="helptext">Letras, digitos e @/./+/-/_ somente.</span></p>
+              <p><label for="id_first_name">Nome:</label> <input type="text" name="first_name" id="id_first_name" maxlength="30" /></p>
+              <p><label for="id_password1">Senha:</label> <input type="password" name="password1" required id="id_password1" /> <span class="helptext"><ul><li>Sua senha não deve ser similar a outra informação pessoal.</li><li>Sua senha deve ter mais que 8 caracteres.</li><li>Sua senha não poderá ter apenas números.</li></ul></span></p>
+              <p><label for="id_password2">Confirmação de senha:</label> <input type="password" name="password2" required id="id_password2" /> <span class="helptext">Entre com a mesma senha para verificação.</span></p>
+            </div>
             </div>
             <div class="row">
                 <div class="col s1"><button type="submit" class="btn-large waves-effect waves-light green darken-2">Registrar</button></div>
