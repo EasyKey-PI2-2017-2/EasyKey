@@ -18,8 +18,6 @@ class Chave():
 
     def carregar_chave(self):
         # img = cv2.imread('media/chave.jpg')
-        import ipdb
-        ipdb.set_trace()
         img = cv2.imread('media/a2.jpg')
         cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         self.chave = cinza
@@ -27,15 +25,15 @@ class Chave():
     def carregar_templates(self):
         modelos = glob.glob('media/templates/*.jpg')
         for path in modelos:
-            img = cv2.imread(path, 0)
-            cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            self.templates.append(cinza)
+            self.templates.append(path)
 
     def verificar_modelo(self):
         match = False
         for template in self.templates:
-            w, h = template.shape[::-1]
-            res = cv2.matchTemplate(self.chave, template, cv2.TM_CCOEFF_NORMED)
+            img_template = cv2.imread(template, 0)
+            # img_template está ficando None
+            w, h = img_template.shape[::-1]
+            res = cv2.matchTemplate(self.chave, img_template, cv2.TM_CCOEFF_NORMED)
             threshold = 0.85
             loc = np.where(res >= threshold)
             if len(loc[0]) > 0:
@@ -43,6 +41,7 @@ class Chave():
                 break
             else:
                 match = False
+                
         return match
 
     def carregar_imagens(self):
