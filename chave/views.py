@@ -3,17 +3,49 @@ import cv2
 import matplotlib.pyplot as plt
 import subprocess
 import os
+import glob
 
 from math import pow, sqrt
 from django.shortcuts import render
 
 
-class GCode():
-    def carregar_imagens(self):
-        # carregando imagem
-        img = cv2.imread('media/chave.jpg')
-        cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+class Chave():
+    def __init__(self):
+        self.chave = 0
+        self.templates = []
+        self.match = 0
+        self.escala = 0
 
+    def carregar_chave(self):
+        # img = cv2.imread('media/chave.jpg')
+        import ipdb
+        ipdb.set_trace()
+        img = cv2.imread('media/a2.jpg')
+        cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        self.chave = cinza
+
+    def carregar_templates(self):
+        modelos = glob.glob('media/templates/*.jpg')
+        for path in modelos:
+            img = cv2.imread(path, 0)
+            cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            self.templates.append(cinza)
+
+    def verificar_modelo(self):
+        match = False
+        for template in self.templates:
+            w, h = template.shape[::-1]
+            res = cv2.matchTemplate(self.chave, template, cv2.TM_CCOEFF_NORMED)
+            threshold = 0.85
+            loc = np.where(res >= threshold)
+            if len(loc[0]) > 0:
+                match = True
+                break
+            else:
+                match = False
+        return match
+
+    def carregar_imagens(self):
         # transformações para imagem da escala
         escala = cinza[140:190, 45:55]
         _, escala_limite = cv2.threshold(escala, 127, 255, 0)
@@ -45,7 +77,7 @@ class GCode():
                     ultimo = x
 
         tamanho = ultimo-primeiro
-        return 1/tamanho*3
+        return 1/tamanho
 
     def gcode(self, img, escala):
         f = open('media/gcode.nc', 'w')

@@ -7,14 +7,12 @@ from django.contrib.auth.decorators import login_required
 import datetime
 
 from base.forms import SignupForm
-from chave.views import GCode
+from chave.views import Chave
 
 def home(request):
     if request.user.is_authenticated():
-        print("entrou")
         return redirect('key_code')
     else:
-        print("entrou2")
         hour = datetime.datetime.now().strftime('%H');
         hour = int(hour)
         if hour >= 0 and hour <= 11:
@@ -28,19 +26,28 @@ def home(request):
 @login_required
 def key_code(request):
     if request.method == 'POST':
-        error = True
-        return render(request, 'copy/key_code.html', {'error': error})
+        chave = Chave()
+        chave.carregar_chave()
+        chave.carregar_templates()
+        match = chave.verificar_modelo()
+        if match:
+            chave.carregar_imagens()
+            return redirect('key_cut')
+        else:
+            return render(request, 'copy/key_code.html', {'error': error})
+
     else:
-        gc = GCode()
-        gc.carregar_imagens()
         return render(request, 'copy/key_code.html')
 
+@login_required
 def key_cut(request):
     return render(request, 'copy/key_cut.html')
 
+@login_required
 def key_finish(request):
     return render(request, 'copy/key_finish.html')
 
+@login_required
 def signup(request):
     if request.method == 'POST':
         name = request.POST['first_name']
@@ -94,6 +101,7 @@ def login_view(request):
     else:
         return render(request, 'base/login.html')
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('home')

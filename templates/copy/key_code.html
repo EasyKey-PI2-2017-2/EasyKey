@@ -21,19 +21,17 @@
           <h1 class="panel-title">Código da Chave</h1>
         </div>
         <div class="panel-body">
-          <h5 class="light" style="text-align: left;">Posicione a chave corretamente para leitura do seu código.</h5>  
+          <h5 class="light" style="text-align: left;">Posicione a chave corretamente para leitura do seu código.</h5>
         </div>
       </div>
       <br>
-      {% if error %}
-        <a href="{% url 'key_cut' %}" class="btn-large waves-effect waves-light blue darken-3">Refazer Leitura</a>
-      {% else %}
-        <a href="{% url 'key_cut' %}" class="btn-large waves-effect waves-light blue darken-3">Leitura Correta</a>
-      {% endif %}
       <form action="" method="POST">
         {% csrf_token %}
-        <br>
-        <button type="submit" class="btn-large waves-effect waves-light red darken-3">Leitura Com Erro</button>
+        {% if error %}
+        <button type="submit" class="btn-large waves-effect waves-light blue darken-3">Refazer Leitura</button>
+        {% else %}
+        <button type="submit" class="btn-large waves-effect waves-light blue darken-3">Ler Chave</button>
+        {% endif %}
       </form>
     </fieldset>
   </div>

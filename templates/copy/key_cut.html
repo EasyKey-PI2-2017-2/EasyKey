@@ -9,6 +9,10 @@ function stop() {
   document.getElementById("barraestatica").style.visibility = 'visible';
   document.getElementById("barrainterminate").style.visibility = "hidden";
     alert("A maquina parou");
+    sleep(2000).then(() => {
+        // Do something after the sleep!
+        window.location.replace("http://localhost:8000/key_code/");
+    });
 }
 function move() {
     var elem = document.getElementById("myBar");
@@ -19,7 +23,7 @@ function move() {
             clearInterval(id);
             sleep(2000).then(() => {
             // Do something after the sleep!
-            window.location.replace("http://localhost:8080/key_finish/");
+            window.location.replace("http://localhost:8000/key_finish/");
           });
         } else {
           if(document.getElementById("barraestatica").style.visibility != 'visible'){
