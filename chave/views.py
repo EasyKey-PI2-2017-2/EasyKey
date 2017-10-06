@@ -19,6 +19,7 @@ class Chave():
 
     def carregar_chave(self):
         # TODO Alterar quando estiver com a estrutura pronta
+        # TODO Tirar a foto usando o PiCamera e salvar nesse path abaixo
         # img = cv2.imread('media/chave.jpg')
         img = cv2.imread('media/a2.jpg')
         cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -44,12 +45,9 @@ class Chave():
                 match = False
         return match
 
-    def carregar_imagens(self):
-        pass
-
-
     def definir_contorno(self):
         # transformações para imagem da chave
+        # TODO verificar tamanho da chave pra cortar do tamanho certo
         chave = self.chave[114:433, 190:260]
         borrado = cv2.GaussianBlur(chave, (5, 5), 0)
         _, chave_limite_antes = cv2.threshold(borrado, 127, 255, 0)
@@ -101,6 +99,7 @@ class Chave():
                     f.write(self.g1(referencia, (x,y), self.escala))
                     break
         f.write('M2')
+        f.close()
 
     def g0(self, x, y):
         return 'G0 X{} Y{}\n'.format(x, y)
