@@ -31,10 +31,12 @@ def key_code(request):
         chave.carregar_templates()
         match = chave.verificar_modelo()
         if match:
-            chave.carregar_imagens()
+            chave.definir_escala()
+            chave.definir_contorno()
+            chave.gcode()
             return redirect('key_cut')
         else:
-            return render(request, 'copy/key_code.html', {'error': error})
+            return render(request, 'copy/key_code.html', {'match': match})
 
     else:
         return render(request, 'copy/key_code.html')
