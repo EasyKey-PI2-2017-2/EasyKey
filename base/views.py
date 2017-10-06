@@ -23,7 +23,7 @@ def home(request):
             mensagem = "Boa Noite!"
         return render(request, 'copy/home.html', {'mensagem': mensagem})
 
-@login_required
+@login_required(login_url='login')
 def key_code(request):
     if request.method == 'POST':
         chave = Chave()
@@ -47,14 +47,13 @@ def key_code(request):
             error = True
             return render(request, 'copy/key_code.html', {'error2': error})
 
-@login_required
+@login_required(login_url='login')
 def key_cut(request):
     return render(request, 'copy/key_cut.html')
 
-@login_required
+@login_required(login_url='login')
 def key_finish(request):
     return render(request, 'copy/key_finish.html')
-
 
 def signup(request):
     if request.method == 'POST':
@@ -109,7 +108,7 @@ def login_view(request):
     else:
         return render(request, 'base/login.html')
 
-@login_required
+@login_required(login_url='login')
 def logout_view(request):
     logout(request)
     return redirect('home')
