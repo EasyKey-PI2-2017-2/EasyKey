@@ -37,9 +37,13 @@
       <form action="" method="POST">
         {% csrf_token %}
         {% if error or error2 %}
-        <button type="submit" class="btn-large waves-effect waves-light blue darken-3">Refazer Leitura</button>
+        <button type="submit" class="btn-large waves-effect waves-light blue darken-3">Refazer Leitura
+            <i class="large material-icons right">autorenew</i>
+        </button>
         {% else %}
-        <button type="submit" class="btn-large waves-effect waves-light blue darken-3">Ler Chave</button>
+        <button type="submit" class="btn-large waves-effect waves-light blue darken-3">Ler Chave
+            <i class="large material-icons right">visibility</i>
+        </button>
         {% endif %}
       </form>
     </fieldset>

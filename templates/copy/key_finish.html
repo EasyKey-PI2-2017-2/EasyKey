@@ -14,9 +14,15 @@
         </div>
       </div>
       <br>
-      <a href="{% url 'key_code' %}" class="btn-large waves-effect waves-light blue darken-3">Cortar Uma Nova Chave</a>
-      <a href="{% url 'key_cut' %}" class="btn-large waves-effect waves-light yellow darken-3">Cortar a Mesma Chave</a>
-      <a href="{% url 'logout' %}" class="btn-large waves-effect waves-light red darken-3">Finalizar Operação</a>
+      <a href="{% url 'key_code' %}" class="btn-large waves-effect waves-light blue darken-3">Cortar Uma Nova Chave
+          <i class="large material-icons right">add</i>
+      </a>
+      <a href="{% url 'key_cut' %}" class="btn-large waves-effect waves-light yellow darken-3">Cortar a Mesma Chave
+          <i class="large material-icons right">send</i>
+      </a>
+      <a href="{% url 'logout' %}" class="btn-large waves-effect waves-light red darken-3">Finalizar Operação
+          <i class="large material-icons right">exit_to_app</i>
+      </a>
     </fieldset>
   </div>
 </div>
