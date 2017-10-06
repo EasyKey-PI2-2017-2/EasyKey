@@ -36,10 +36,16 @@ def key_code(request):
             chave.gcode()
             return redirect('key_cut')
         else:
-            return render(request, 'copy/key_code.html', {'match': match})
-
+            error = True
+            return render(request, 'copy/key_code.html', {'error': error})
     else:
-        return render(request, 'copy/key_code.html')
+        error = request.GET.get('error');
+
+        if not error:
+            return render(request, 'copy/key_code.html')
+        else:
+            error = True
+            return render(request, 'copy/key_code.html', {'error2': error})
 
 @login_required
 def key_cut(request):
@@ -49,7 +55,7 @@ def key_cut(request):
 def key_finish(request):
     return render(request, 'copy/key_finish.html')
 
-@login_required
+
 def signup(request):
     if request.method == 'POST':
         name = request.POST['first_name']
