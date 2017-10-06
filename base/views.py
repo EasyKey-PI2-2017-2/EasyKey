@@ -10,7 +10,7 @@ from base.forms import SignupForm
 from chave.views import Chave
 
 def home(request):
-    if request.user.is_authenticated():
+    if request.method == 'POST':
         return redirect('key_code')
     else:
         hour = datetime.datetime.now().strftime('%H');
@@ -23,7 +23,6 @@ def home(request):
             mensagem = "Boa Noite!"
         return render(request, 'copy/home.html', {'mensagem': mensagem})
 
-@login_required(login_url='login')
 def key_code(request):
     if request.method == 'POST':
         chave = Chave()
@@ -47,68 +46,8 @@ def key_code(request):
             error = True
             return render(request, 'copy/key_code.html', {'error2': error})
 
-@login_required(login_url='login')
 def key_cut(request):
     return render(request, 'copy/key_cut.html')
 
-@login_required(login_url='login')
 def key_finish(request):
     return render(request, 'copy/key_finish.html')
-
-def signup(request):
-    if request.method == 'POST':
-        name = request.POST['first_name']
-        username = request.POST['username']
-        password = request.POST['password1']
-        passwordVerify = request.POST['password2']
-        error = "";
-        if passwordVerify != password:
-            error = "- As senhas não conferem "
-        if len(password) < 8:
-            error = error + "- A senha não tem 8 caracteres "
-        if len(username) < 1:
-            error = error + "- Digite o usuário"
-        if password.isdigit():
-            error = error + "- A senha possui apenas digitos"
-        if len(error) == 0:
-            if not User.objects.filter(username = username).exists():
-                user = User.objects.create_user(username, name, password)
-                user.save()
-                login(request, user)
-                return redirect('home')
-            else:
-                error_bool = True
-                error = "Já existe uma conta com esse usuário!"
-                information = {
-                    'error_bool': error_bool,
-                    'error': error,
-                }
-                return render(request, 'base/signup.html', information)
-        else:
-            error_bool = True
-            information = {
-                'error_bool': error_bool,
-                'error': error,
-            }
-            return render(request, 'base/signup.html', information)
-    else:
-        return render(request, 'base/signup.html')
-
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            error = True
-            return render(request, 'base/login.html', {'error': error})
-    else:
-        return render(request, 'base/login.html')
-
-@login_required(login_url='login')
-def logout_view(request):
-    logout(request)
-    return redirect('home')

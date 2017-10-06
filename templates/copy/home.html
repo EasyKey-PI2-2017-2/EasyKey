@@ -4,14 +4,21 @@
 <div class="container">
   <div class="row">
     <fieldset>
-      <legend>Login</legend>
-      <div class="panel panel-info">
+      <legend>Início</legend>
+      <div class="panel panel-info center">
         <div class="panel-heading">
-          <h3 class="panel-title">{{ mensagem }}</h3>
+          <h1 class="panel-title">{{ mensagem }}</h1>
         </div>
         <div class="panel-body">
-            <h5 class="light" style="text-align: left;">Efetue o login para a realização da cópia da sua chave.</h5>
+            <h5 class="light">EasyKey sua máquina de cópia de chaves automática.</h5>
         </div>
+        <br>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn-large waves-effect waves-light blue darken-3">Toque para iniciar
+                <i class="large material-icons right">touch_app</i>
+            </button>
+          </form>
       </div>
     </fieldset>
   </div>

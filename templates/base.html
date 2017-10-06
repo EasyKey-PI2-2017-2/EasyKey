@@ -16,25 +16,6 @@
         <a id="logo-container" href="/" class="light brand-logo black-text">EasyKey        
           <i class="large material-icons right">vpn_key</i>
         </a>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
-              <ul class="right hide-on-med-and-down">
-                  <li><a class="light black-text" href="{% url 'logout' %}">Sair
-                      <i class="large material-icons right">exit_to_app</i>
-                    </a></li>
-            {% else %}
-              <ul class="right hide-on-med-and-down">
-                  <li><a class="light black-text" href="{% url 'signup' %}">Faça seu cadastro
-                      <i class="large material-icons right">person_add</i></a></li>
-              </ul>
-              <ul class="right hide-on-med-and-down">
-                  <li><a class="light black-text" href="{% url 'login' %}">Login
-                      <i class="large material-icons right">person</i></a></li>
-              </ul>
-            {% endif %}
-          </ul>
-        </div>
       </div>
     </nav>
     <br>
