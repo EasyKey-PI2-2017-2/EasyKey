@@ -4,10 +4,13 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from paypal.standard.forms import PayPalPaymentsForm
 import datetime
 
 from base.forms import SignupForm
 from chave.views import Chave
+
 
 def home(request):
     if request.method == 'POST':
@@ -33,7 +36,7 @@ def key_code(request):
             chave.definir_escala()
             chave.definir_contorno()
             chave.gcode()
-            return redirect('key_cut')
+            return redirect('key_payment')
         else:
             error = True
             return render(request, 'copy/key_code.html', {'error': error})
@@ -51,3 +54,22 @@ def key_cut(request):
 
 def key_finish(request):
     return render(request, 'copy/key_finish.html')
+
+def key_payment(request):
+    # What you want the button to do.
+    paypal_dict = {
+        "business": "mdiebr-facilitator@gmail.com",
+        "amount": "5.00",
+        "item_name": "Cópia de chave - Teste 1",
+        "invoice": "VTSAIvbBOCuiabyojhF",
+        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        "return_url": request.build_absolute_uri(reverse('key_cut')),
+        "cancel_return": request.build_absolute_uri(reverse('home')),
+        "custom": "premium_plan",
+        "currency_code": "BRL",
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
+    return render(request, "copy/key_payment.html", context)

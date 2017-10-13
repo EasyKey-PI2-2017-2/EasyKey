@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     # third party apps
     'django_extensions',
+    'paypal.standard.ipn',
 
     # django apps
     'django.contrib.admin',
@@ -128,6 +129,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+PAYPAL_TEST = True
+PAYPAL_BUY_BUTTON_IMAGE = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2000px-PayPal.svg.png'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
