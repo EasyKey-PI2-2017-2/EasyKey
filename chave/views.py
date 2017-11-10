@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import subprocess
 import os
 import glob
+import serial
+import time
 
 from math import pow, sqrt
 from django.shortcuts import render
@@ -16,6 +18,22 @@ class Chave():
         self.match = 0
         self.contorno = 0
         self.escala = 0
+
+    def enviar_comandos(self):
+        try:
+            ser = serial.Serial('/dev/ttyACM1', 9600, timeout=None)
+            ser.write('0'.encode('ASCII'))
+            time.sleep(1)
+            ser.read_all()
+            ser.write('g0'.encode('ASCII'))
+        except NameError:
+            print(NameError)
+
+        # f = open("gcode.nc")
+        # for l in f:
+            # print(l.strip())
+            # ser.write((l.strip() + "\n").encode("ASCII"))
+            # ser.read(1)
 
     def carregar_chave(self):
         # TODO Alterar quando estiver com a estrutura pronta

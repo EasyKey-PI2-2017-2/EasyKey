@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from paypal.standard.forms import PayPalPaymentsForm
 import datetime
+import random
+import string
 
 from base.forms import SignupForm
 from chave.views import Chave
@@ -50,18 +52,22 @@ def key_code(request):
             return render(request, 'copy/key_code.html', {'error2': error})
 
 def key_cut(request):
+    chave = Chave()
+    chave.enviar_comandos()
     return render(request, 'copy/key_cut.html')
 
 def key_finish(request):
     return render(request, 'copy/key_finish.html')
 
 def key_payment(request):
-    # What you want the button to do.
+    # What you want tha button to do.
+    ale = random.randint(1,100)
     paypal_dict = {
         "business": "mdiebr-facilitator@gmail.com",
-        "amount": "5.00",
-        "item_name": "Cópia de chave - Teste 1",
-        "invoice": "VTSAIvbBOCuiabyojhF",
+        "amount": "{}".format(ale),
+        "item_name": "Cópia de chave - Teste {}".format(ale),
+        "invoice": "{}".format(''.join(random.choice(
+            string.ascii_letters + string.digits) for _ in range(15))),
         "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
         "return_url": request.build_absolute_uri(reverse('key_cut')),
         "cancel_return": request.build_absolute_uri(reverse('home')),
