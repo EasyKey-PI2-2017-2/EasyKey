@@ -2,7 +2,8 @@ from django.db import models
 import numpy as np
 import cv2
 import glob
-
+import serial
+import time
 
 class Key():
     def __init__(self):
@@ -11,6 +12,22 @@ class Key():
         self.match = 0
         self.contour = 0
         self.scale = 0
+
+    def enviar_comandos(self):
+        try:
+            ser = serial.Serial('/dev/ttyACM1', 9600, timeout=None)
+            ser.write('0'.encode('ASCII'))
+            time.sleep(1)
+            ser.read_all()
+            ser.write('g0'.encode('ASCII'))
+        except NameError:
+            print(NameError)
+
+            # f = open("gcode.nc")
+            # for l in f:
+            # print(l.strip())
+            # ser.write((l.strip() + "\n").encode("ASCII"))
+            # ser.read(1)
 
     def load_key(self):
         # TODO Alterar quando estiver com a estrutura pronta

@@ -2,13 +2,17 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from paypal.standard.forms import PayPalPaymentsForm
 import datetime
+import random
+import string
 
 from .models import Key
 
 
 def home(request):
-    if request.user.is_authenticated():
+    if request.method == 'POST':
         return redirect('key_code')
     else:
         hour = datetime.datetime.now().strftime('%H');
@@ -31,7 +35,7 @@ def key_code(request):
             key.define_scale()
             key.gcode()
             
-            return redirect('key_cut')
+            return redirect('key_payment')
         else:
             error = True
             
@@ -48,8 +52,33 @@ def key_code(request):
 
 @login_required(login_url='login')
 def key_cut(request):
+    key = Key()
+    key.enviar_comandos()
     return render(request, 'copy/key_cut.html')
 
+
+@login_required(login_url='login')
+def key_payment(request):
+    # What you want tha button to do.
+    ale = random.randint(1, 100)
+    paypal_dict = {
+        "business": "mdiebr-facilitator@gmail.com",
+        "amount": "{}".format(ale),
+        "item_name": "Cópia de chave - Teste {}".format(ale),
+        "invoice": "{}".format(''.join(random.choice(
+            string.ascii_letters + string.digits) for _ in range(15))),
+        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        "return_url": request.build_absolute_uri(reverse('key_cut')),
+        "cancel_return": request.build_absolute_uri(reverse('home')),
+        "custom": "premium_plan",
+        "currency_code": "BRL",
+    }
+
+    form = PayPalPaymentsForm(initial=paypal_dict)
+
+    context = {"form": form}
+
+    return render(request, "copy/key_payment.html", context)
 
 @login_required(login_url='login')
 def key_finish(request):
@@ -69,22 +98,28 @@ def signup(request):
             if not User.objects.filter(username = username).exists():
                 user = User.objects.create_user(username, name, password)
                 user.save()
+
                 login(request, user)
+
                 return redirect('home')
             else:
                 error_bool = True
                 error = "Já existe uma conta com esse usuário!"
+
                 information = {
                     'error_bool': error_bool,
                     'error': error,
                 }
+
                 return render(request, 'base/signup.html', information)
         else:
             error_bool = True
+
             information = {
                 'error_bool': error_bool,
                 'error': error,
             }
+
             return render(request, 'base/signup.html', information)
     else:
         return render(request, 'base/signup.html')
@@ -140,3 +175,4 @@ def validate_signup(username, password, password_verify):
         error = error + "- A senha possui apenas dígitos "
         
     return error
+

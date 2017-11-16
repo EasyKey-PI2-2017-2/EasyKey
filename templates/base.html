@@ -5,6 +5,7 @@
     <title>{% block title %}EasyKey{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
   <body>
@@ -12,22 +13,9 @@
     <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
     <nav class="orange lighten-3" role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="/" class="light brand-logo black-text">EasyKey</a>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
-              <ul class="right hide-on-med-and-down">
-                  <li><a class="light black-text" href="{% url 'logout' %}">Sair</a></li>
-            {% else %}
-              <ul class="right hide-on-med-and-down">
-                  <li><a class="light black-text" href="{% url 'signup' %}">Faça seu cadastro</a></li>
-              </ul>
-              <ul class="right hide-on-med-and-down">
-                  <li><a class="light black-text" href="{% url 'login' %}">Login</a></li>
-              </ul>
-            {% endif %}
-          </ul>
-        </div>
+        <a id="logo-container" href="/" class="light brand-logo black-text">EasyKey        
+          <i class="large material-icons right">vpn_key</i>
+        </a>
       </div>
     </nav>
     <br>

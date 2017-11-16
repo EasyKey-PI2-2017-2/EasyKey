@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <fieldset>
+      <legend>Etapa 2/4</legend>
+      <div class="panel panel-info center">
+          <div class="card-panel">
+              <span class="green-text text-darken-2">A Leitura da Chave Ocorreu Corretamente!</span>
+          </div>
+        <div class="panel-heading">
+          <h1 class="panel-title">Pagamento</h1>
+        </div>
+        <div class="panel-body">
+            <h5 class="light">Posicione a chave virgem no torno para ser cortada e pressione cortar.</h5>
+        </div>
+        <br>
+        {{ form.render }}
+      </div>
+    </fieldset>
+  </div>
+</div>
+
+{% endblock %}
