@@ -76,7 +76,8 @@ class Key():
         #scale_inversa = (255 - scale_limite)
         #scale_final = scale_inversa.transpose()
 
-        # TODO retirar isso quando tivermos scale
+        # TODO retirar essas 2 linhas quando tivermos scale
+        self.scale = 1
         return 1
 
         first = 0
