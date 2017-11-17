@@ -86,3 +86,6 @@ target/
 *.ipynb
 db.sqlite3
 .vscode/settings.json
+
+base/migrations
+media/gcode.nc

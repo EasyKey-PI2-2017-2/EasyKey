@@ -34,7 +34,6 @@ LOGIN_REDIRECT_URL = 'home'
 INSTALLED_APPS = [
     # easykey apps
     'base',
-    'chave',
 
     # third party apps
     'django_extensions',
