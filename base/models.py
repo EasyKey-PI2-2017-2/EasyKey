@@ -1,11 +1,22 @@
 from django.db import models
+from model_utils.models import TimeStampedModel
+
 import numpy as np
 import cv2
 import glob
 import serial
 import time
 
-class Key():
+
+class Payment(TimeStampedModel):
+    value = models.FloatField(verbose_name="Valor da Compra")
+    token = models.CharField('Token', max_length=200)
+    timestamp = models.DateTimeField()
+
+    def __str__(self):
+        return self.value
+
+class Key:
     def __init__(self):
         self.key = 0
         self.templates = []

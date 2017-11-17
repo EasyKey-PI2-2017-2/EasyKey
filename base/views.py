@@ -5,7 +5,7 @@ import datetime
 import random
 import string
 
-from .models import Key
+from .models import Key, Payment
 
 
 def home(request):
@@ -54,19 +54,29 @@ def key_cut(request):
 
 def key_payment(request):
     # What you want tha button to do.
-    ale = random.randint(1, 100)
+    value = random.randint(1, 100)
+    token = ''.join(random.choice(
+            string.ascii_letters + string.digits) for _ in range(15))
+
     paypal_dict = {
         "business": "mdiebr-facilitator@gmail.com",
-        "amount": "{}".format(ale),
-        "item_name": "Cópia de chave - Teste {}".format(ale),
-        "invoice": "{}".format(''.join(random.choice(
-            string.ascii_letters + string.digits) for _ in range(15))),
+        "amount": "{}".format(value),
+        "item_name": "Cópia de chave - Teste {}".format(value),
+        "invoice": "{}".format(token),
         "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
         "return_url": request.build_absolute_uri(reverse('key_cut')),
         "cancel_return": request.build_absolute_uri(reverse('home')),
         "custom": "premium_plan",
         "currency_code": "BRL",
     }
+
+    payment = Payment()
+
+    payment.value = value
+    payment.token = token
+    payment.timestamp = datetime.datetime.now()
+
+    payment.save()
 
     form = PayPalPaymentsForm(initial=paypal_dict)
 
