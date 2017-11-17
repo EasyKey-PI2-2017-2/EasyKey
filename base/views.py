@@ -25,16 +25,14 @@ def key_code(request):
         key.load_key()
         key.load_templates()
         match = key.verify_key_model()
-        
         if match:
             key.define_contour()
             key.define_scale()
             key.gcode()
-            
+            return redirect('key_cut')
             return redirect('key_payment')
         else:
             error = True
-            
             return render(request, 'copy/key_code.html', {'error': error})
     else:
         error = request.GET.get('error');
@@ -47,13 +45,15 @@ def key_code(request):
 
 
 def key_cut(request):
-    key = Key()
-    key.enviar_comandos()
+    # key = Key()
+    # key.enviar_comandos()
     return render(request, 'copy/key_cut.html')
 
 
 def key_payment(request):
     # What you want tha button to do.
+    # email: mdiebr-buyer@gmail.com
+    # pw: easykeyteste
     value = random.randint(1, 100)
     token = ''.join(random.choice(
             string.ascii_letters + string.digits) for _ in range(15))
@@ -81,7 +81,6 @@ def key_payment(request):
     form = PayPalPaymentsForm(initial=paypal_dict)
 
     context = {"form": form}
-
     return render(request, "copy/key_payment.html", context)
 
 

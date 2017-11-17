@@ -53,22 +53,23 @@ def g1(referencia, pixel, escala):
     return 'G1 X{} Y{}\n'.format(difx * escala , dify * escala)
 
 if __name__ == '__main__':
-    im = cv2.imread('rasp.jpg')
-    imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
-    escala = imgray[60:130, 290:310]
-    chave = imgray[25:152, 405:440]
+    im = cv2.imread('rasp1.jpg')
+    rgb = cv2.cvtColor(im,cv2.COLOR_BGR2RGB)
+    imgray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
+    escala = imgray[345:420, 290:310]
+    chave = imgray[330:470, 400:450]
 
     blur = cv2.GaussianBlur(chave, (5,5), 0)
-    
 
+    minimo = (escala.max() - escala.min())//2 + escala.min()
     ret,t_antes = cv2.threshold(blur,204,255,cv2.THRESH_BINARY)
-    ret,t_escala = cv2.threshold(escala,188,255,cv2.THRESH_BINARY)
-    
+    ret,t_escala = cv2.threshold(escala,minimo,255,cv2.THRESH_BINARY)
+
     t_depois = cv2.erode(t_antes, None, iterations=1)
-    
+
     cfinal = (t_antes - t_depois)
     cfinal = (255-cfinal)
     efinal = (255-t_escala)
     efinal = efinal.transpose()
-    
+
     #escala = set_escala(efinal)
