@@ -32,3 +32,7 @@ traitlets==4.3.2
 typing==3.6.2
 urllib3==1.22
 wcwidth==0.1.7
+pytest==3.2.5
+pytest-sugar==0.8.0
+pytest-django==3.1.2
+django-model-utils==3.0.0
