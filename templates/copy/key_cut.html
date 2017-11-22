@@ -64,12 +64,15 @@ function cut() {
             <h5 class="light">Posicione a chave virgem no torno para ser cortada e pressione cortar.</h5>
         </div>
         <br>
-        <a onclick="cut()"  class="btn-large waves-effect waves-light blue darken-3" id="cortar">Cortar
-            <i class="large material-icons right">send</i>
-        </a>
-        <a onclick="stop()" class="btn-large waves-effect waves-light red darken-3 disabled" id="parar" >Parar Corte
-            <i class="large material-icons right">report</i>
-        </a>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <button onclick="cut()" type="submit" class="btn-large waves-effect waves-light blue darken-3" id="cortar">Cortar
+                <i class="large material-icons right">send</i>
+            </button>
+            <button onclick="stop()" class="btn-large waves-effect waves-light red darken-3 disabled" id="parar" >Parar Corte
+                <i class="large material-icons right">report</i>
+            </button>
+        </form>
       </div>
     </fieldset>
   </div>

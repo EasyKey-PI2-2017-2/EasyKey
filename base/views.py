@@ -4,19 +4,35 @@ from paypal.standard.forms import PayPalPaymentsForm
 import datetime
 import random
 import string
+import serial
 
 from .models import Key, Payment
 
+SERIAL = 0
 
 def home(request):
-    if request.method == 'POST':
-        return redirect('key_code')
-    else:
-        hour = datetime.datetime.now().strftime('%H');
-        hour = int(hour)
-        message = hello_msg(hour)
+    global SERIAL
+    hour = datetime.datetime.now().strftime('%H');
+    hour = int(hour)
+    message = hello_msg(hour)
 
+    if request.method == 'GET':
+        for i in range(10):
+            SERIAL = serial_connection(i)
+            if SERIAL:
+                break;
+        if not SERIAL:
+            error = True
+            return render(request, 'copy/home.html', {'message': message,
+                                                      'serial_error': error})
         return render(request, 'copy/home.html', {'message': message})
+    if request.method == 'POST':
+        if SERIAL:
+            return redirect('key_code')
+        else:
+            error = True
+            return render(request, 'copy/home.html', {'message': message,
+                                                      'serial_error': error})
 
 
 def key_code(request):
@@ -29,7 +45,6 @@ def key_code(request):
             key.define_contour()
             key.define_scale()
             key.gcode()
-            return redirect('key_cut')
             return redirect('key_payment')
         else:
             error = True
@@ -45,8 +60,9 @@ def key_code(request):
 
 
 def key_cut(request):
-    # key = Key()
-    # key.enviar_comandos()
+    if request.method == 'POST':
+        send_commands(request)
+
     return render(request, 'copy/key_cut.html')
 
 
@@ -97,3 +113,51 @@ def hello_msg(hour):
         message = "Boa Noite!"
 
     return message
+
+
+def serial_connection(value):
+    try:
+        ser = serial.Serial('/dev/ttyACM{}'.format(value), 9600,
+                            timeout=None)
+        return ser
+    except:
+        return 0
+
+
+def send_commands(request):
+    global SERIAL
+    
+
+
+
+
+
+
+
+
+CRIAR THREAD NESSA MERDA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    SERIAL.write('0'.encode('ASCII'))
+    time.sleep(1)
+    SERIAL.read_all()
+    SERIAL.write('g0'.encode('ASCII'))
+
+    # f = open("gcode.nc")
+    # for l in f:
+    # print(l.strip())
+    # ser.write((l.strip() + "\n").encode("ASCII"))
+    # ser.read(1)
+
