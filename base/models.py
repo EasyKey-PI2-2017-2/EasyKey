@@ -18,6 +18,7 @@ class Payment(TimeStampedModel):
     def __str__(self):
         return self.value
 
+
 class Key():
     def __init__(self):
         self.key = 0

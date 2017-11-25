@@ -5,37 +5,53 @@ import datetime
 import random
 import string
 import serial
+import time
 
 from .models import Key, Payment
 
-SERIAL = 0
+ser = None
+
+
+def serial_connection_required(func):
+    def decorator(request, *args, **kwargs):
+        global ser
+        import ipdb
+        ipdb.set_trace()
+
+        if not ser:
+            message = hello_msg()
+            error = True
+            return redirect('home')
+        else:
+            return func(request, *args, **kwargs)
+    decorator.__doc__=func.__doc__
+    decorator.__name__=func.__name__
+    return decorator
+
 
 def home(request):
-    global SERIAL
-    hour = datetime.datetime.now().strftime('%H');
-    hour = int(hour)
-    message = hello_msg(hour)
+    global ser
+
+    message = hello_msg()
 
     if request.method == 'GET':
-        for i in range(10):
-            SERIAL = serial_connection(i)
-            if SERIAL:
-                break;
-        if not SERIAL:
-            error = True
-            return render(request, 'copy/home.html', {'message': message,
-                                                      'serial_error': error})
         return render(request, 'copy/home.html', {'message': message})
     if request.method == 'POST':
-        if SERIAL:
+        if not ser:
+            try_to_connect()
+        if ser:
             return redirect('key_code')
-        else:
+        if not ser:
             error = True
-            return render(request, 'copy/home.html', {'message': message,
-                                                      'serial_error': error})
+            return render(
+                request, 'copy/home.html',
+                {'message': message, 'serial_error': error})
 
 
+@serial_connection_required
 def key_code(request):
+    global ser
+
     if request.method == 'POST':
         key = Key()
         key.load_key()
@@ -58,7 +74,7 @@ def key_code(request):
             error = True
             return render(request, 'copy/key_code.html', {'error2': error})
 
-
+@serial_connection_required
 def key_cut(request):
     if request.method == 'POST':
         send_commands(request)
@@ -66,6 +82,7 @@ def key_cut(request):
     return render(request, 'copy/key_cut.html')
 
 
+@serial_connection_required
 def key_payment(request):
     # What you want tha button to do.
     # email: mdiebr-buyer@gmail.com
@@ -104,7 +121,9 @@ def key_finish(request):
     return render(request, 'copy/key_finish.html')
 
 
-def hello_msg(hour):
+def hello_msg():
+    hour = datetime.datetime.now().strftime('%H');
+    hour = int(hour)
     if hour >= 0 and hour <= 11:
         message = "Bom Dia!"
     elif hour >= 12 and hour <= 17:
@@ -113,6 +132,14 @@ def hello_msg(hour):
         message = "Boa Noite!"
 
     return message
+
+
+def try_to_connect():
+    global ser
+    for i in range(10):
+        ser = serial_connection(i)
+        if ser:
+            break;
 
 
 def serial_connection(value):
@@ -124,36 +151,13 @@ def serial_connection(value):
         return 0
 
 
+
 def send_commands(request):
-    global SERIAL
-    
-
-
-
-
-
-
-
-
-CRIAR THREAD NESSA MERDA
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    SERIAL.write('0'.encode('ASCII'))
+    global ser
+    ser.write('0'.encode('ASCII'))
     time.sleep(1)
-    SERIAL.read_all()
-    SERIAL.write('g0'.encode('ASCII'))
+    ser.read_all()
+    ser.write('g0'.encode('ASCII'))
 
     # f = open("gcode.nc")
     # for l in f:
