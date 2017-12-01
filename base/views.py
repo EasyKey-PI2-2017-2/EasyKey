@@ -15,8 +15,6 @@ ser = None
 def serial_connection_required(func):
     def decorator(request, *args, **kwargs):
         global ser
-        import ipdb
-        ipdb.set_trace()
 
         if not ser:
             message = hello_msg()
@@ -77,7 +75,13 @@ def key_code(request):
 @serial_connection_required
 def key_cut(request):
     if request.method == 'POST':
-        send_commands(request)
+        ser.write('s'.encode("ASCII"))
+        resultado = send_commands()
+        if resultado is "ok":
+            return render(request, 'copy/key_finish.html')
+        else:
+            error = True
+            return render(request, 'copy/key_code.html', {'error3': error})
 
     return render(request, 'copy/key_cut.html')
 
@@ -151,17 +155,13 @@ def serial_connection(value):
         return 0
 
 
-
-def send_commands(request):
+def send_commands():
     global ser
-    ser.write('0'.encode('ASCII'))
-    time.sleep(1)
-    ser.read_all()
-    ser.write('g0'.encode('ASCII'))
-
-    # f = open("gcode.nc")
-    # for l in f:
-    # print(l.strip())
-    # ser.write((l.strip() + "\n").encode("ASCII"))
-    # ser.read(1)
-
+    file = open("media/gcode.nc")
+    for line in file:
+        ser.write((line[:-1]+'f').encode('ASCII'))
+        time.sleep(0.2)
+        resultado = ser.read_all().decode('ASCII')
+    if resultado == 'q':
+        return "erro"
+    return "ok"
