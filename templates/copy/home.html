@@ -6,6 +6,15 @@
     <fieldset>
       <legend>Início</legend>
       <div class="panel panel-info center">
+
+          {% if serial_error %}
+          <div class="card-panel">
+              <span class="red-text text-darken-2">A COMUNICAÇÃO SERIAL NÃO PODE SER FEITA!</span>
+              <br>
+              <span class="red-text text-darken-2">REPORTE O ERRO PARA UM ADMINISTRADOR</span>
+          </div>
+          {% endif %}
+
         <div class="panel-heading">
           <h1 class="panel-title">{{ message }}</h1>
         </div>

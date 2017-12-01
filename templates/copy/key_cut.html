@@ -2,45 +2,10 @@
 
 {% block content %}
 <script>
-function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-function stop() {
-  document.getElementById("barraestatica").style.visibility = 'visible';
-  document.getElementById("barrainterminate").style.visibility = "hidden";
-    sleep(2000).then(() => {
-        // Do something after the sleep!
-        window.location.replace("http://localhost:8000/key_code/?error=True");
-    });
-}
-function move() {
-    var elem = document.getElementById("myBar");
-    var width = 1;
-    var id = setInterval(frame, 10);
-    function frame() {
-        if (width >= 100) {
-            clearInterval(id);
-            sleep(5000).then(() => {
-            // Do something after the sleep!
-            window.location.replace("http://localhost:8000/key_finish/");
-          });
-        } else {
-          if(document.getElementById("barraestatica").style.visibility != 'visible'){
-            width++;
-          }else {
-            clearInterval(id);
-          }
-        }
-    }
-}
 function cut() {
-
     document.getElementById("cortar").classList.add('disabled');
-    document.getElementById("parar").classList.remove('disabled');
     document.getElementById("barraestatica").style.visibility = "hidden";
     document.getElementById("barrainterminate").style.visibility = 'visible';
-    move();
- //href="{% url 'key_finish' %}"
 }
 </script>
 <div class="container" onload="desabilita()">
@@ -64,12 +29,12 @@ function cut() {
             <h5 class="light">Posicione a chave virgem no torno para ser cortada e pressione cortar.</h5>
         </div>
         <br>
-        <a onclick="cut()"  class="btn-large waves-effect waves-light blue darken-3" id="cortar">Cortar
-            <i class="large material-icons right">send</i>
-        </a>
-        <a onclick="stop()" class="btn-large waves-effect waves-light red darken-3 disabled" id="parar" >Parar Corte
-            <i class="large material-icons right">report</i>
-        </a>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <button onclick="cut()" type="submit" class="btn-large waves-effect waves-light blue darken-3" id="cortar">Cortar
+                <i class="large material-icons right">send</i>
+            </button>
+        </form>
       </div>
     </fieldset>
   </div>
