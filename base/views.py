@@ -52,8 +52,8 @@ def key_code(request):
         key = Key()
         key.load_key()
         key.load_templates()
-        #match = key.verify_key_model()
-        if True:
+        match = key.verify_key_model()
+        if match:
             key.define_contour()
             key.define_scale()
             key.gcode()

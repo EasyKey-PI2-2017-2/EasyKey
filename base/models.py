@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 import glob
 import time
-import picamera
+#import picamera
 
 WHITE_VALUE = 255
 SCALE_VALUE_CM = 2.29
@@ -31,10 +31,11 @@ class Key():
     def load_key(self):
         # TODO Alterar quando estiver com a estrutura pronta
         # TODO Tirar a foto usando o PiCamera e salvar nesse path abaixo
-        camera = picamera.PiCamera()
-        camera.capture('media/chave.jpg')
-        camera.close()
-        img = cv2.imread('media/chave.jpg')
+        # camera = picamera.PiCamera()
+        # camera.capture('media/chave.jpg')
+        # camera.close()
+        #Código acima retirado, pois só irá funcinar na RaspberryPi
+        img = cv2.imread('media/a2.jpg')
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         cv2.imwrite('media/loadgray.jpg', gray)
         self.key = gray
@@ -77,7 +78,6 @@ class Key():
         # TODO quando tivermos a scale definitiva, descomentamos isso daqui
         # transformações para imagem da scale
         scale = self.key[85:240, 470:490]
-        print("aqui")
         #scale = cv2.imread('media/testescale.jpg')
         # scale = cv2.cvtColor(scale, cv2.COLOR_BGR2GRAY)
         midpoint = (scale.max() - scale.min())//2 + scale.min()
