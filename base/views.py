@@ -17,13 +17,11 @@ def serial_connection_required(func):
         global ser
 
         if not ser:
-            message = hello_msg()
-            error = True
             return redirect('home')
         else:
             return func(request, *args, **kwargs)
-    decorator.__doc__=func.__doc__
-    decorator.__name__=func.__name__
+    decorator.__doc__ = func.__doc__
+    decorator.__name__ = func.__name__
     return decorator
 
 
@@ -64,13 +62,14 @@ def key_code(request):
             error = True
             return render(request, 'copy/key_code.html', {'error': error})
     else:
-        error = request.GET.get('error');
+        error = request.GET.get('error')
 
         if not error:
             return render(request, 'copy/key_code.html')
         else:
             error = True
             return render(request, 'copy/key_code.html', {'error2': error})
+
 
 @serial_connection_required
 def key_cut(request):
@@ -97,8 +96,8 @@ def key_payment(request):
 
     paypal_dict = {
         "business": "mdiebr-facilitator@gmail.com",
-        "amount": "{}".format(value),
-        "item_name": "Cópia de chave - Teste {}".format(value),
+        "amount": "{}".format(5),
+        "item_name": "Cópia de chave - Teste {}".format(5),
         "invoice": "{}".format(token),
         "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
         "return_url": request.build_absolute_uri(reverse('key_cut')),
@@ -126,7 +125,7 @@ def key_finish(request):
 
 
 def hello_msg():
-    hour = datetime.datetime.now().strftime('%H');
+    hour = datetime.datetime.now().strftime('%H')
     hour = int(hour)
     if hour >= 0 and hour <= 11:
         message = "Bom Dia!"
@@ -143,7 +142,7 @@ def try_to_connect():
     for i in range(10):
         ser = serial_connection(i)
         if ser:
-            break;
+            break
 
 
 def serial_connection(value):
