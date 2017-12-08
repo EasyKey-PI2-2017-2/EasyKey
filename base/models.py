@@ -5,10 +5,10 @@ import numpy as np
 import cv2
 import glob
 import time
+import picamera
 
 WHITE_VALUE = 255
-SCALE_VALUE_CM = 1
-
+SCALE_VALUE_CM = 2.29
 
 class Payment(TimeStampedModel):
     value = models.FloatField(verbose_name="Valor da Compra")
@@ -31,10 +31,14 @@ class Key():
     def load_key(self):
         # TODO Alterar quando estiver com a estrutura pronta
         # TODO Tirar a foto usando o PiCamera e salvar nesse path abaixo
-        # img = cv2.imread('media/chave.jpg')
-        img = cv2.imread('media/c.jpg')
+        camera = picamera.PiCamera()
+        camera.capture('media/chave.jpg')
+        camera.close()
+        img = cv2.imread('media/chave.jpg')
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        cv2.imwrite('media/loadgray.jpg', gray)
         self.key = gray
+	
 
     def load_templates(self):
         key_models = glob.glob('media/templates/*.jpg')
@@ -60,25 +64,28 @@ class Key():
     def define_contour(self):
         # transformações para imagem da chave
         # TODO verificar size da chave pra cortar do size certo
-        key = self.key[330:470, 400:450]
+        key = self.key[132:270, 350:410]
         blured = cv2.GaussianBlur(key, (5, 5), 0)
         midpoint = (blured.max() - blured.min())//2 + blured.min()
         _, key_limit = cv2.threshold(blured, midpoint, WHITE_VALUE,
                                      cv2.THRESH_BINARY_INV)
         self.contour = key_limit
+        cv2.imwrite('media/contorno.jpg', key_limit)
+	
 
     def define_scale(self):
         # TODO quando tivermos a scale definitiva, descomentamos isso daqui
         # transformações para imagem da scale
-        #scale = self.key[140:190, 45:55]
-        #midpoint = (scale.max() - scale.min())//2 + scale.min()
-        #_, scale_limit = cv2.threshold(scale, midpoint, WHITE_VALUE,
-        #                                cv2.THRESH_BINARY_INV)
-        #scale_final = scale_limit.transpose()
-
-        # TODO retirar isso quando tivermos scale
-        self.scale = 1
-        return
+        scale = self.key[85:240, 470:490]
+        print("aqui")
+        #scale = cv2.imread('media/testescale.jpg')
+        # scale = cv2.cvtColor(scale, cv2.COLOR_BGR2GRAY)
+        midpoint = (scale.max() - scale.min())//2 + scale.min()
+        _, scale_limit = cv2.threshold(scale, midpoint, WHITE_VALUE,
+                                        cv2.THRESH_BINARY_INV)
+        scale_final = scale_limit.transpose()
+        cv2.imwrite('media/escala_scale.jpg', scale) 
+        cv2.imwrite('media/escala.jpg', scale_limit)
 
         first = 0
         last = 0
@@ -97,7 +104,7 @@ class Key():
 
     def gcode(self):
         f = open('media/gcode.nc', 'w')
-        f.write(self.g0(0, 2))
+        f.write(self.g0(0, 0.365))
 
         for x, row in enumerate(self.contour):
             for y, pixel in enumerate(row):

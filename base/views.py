@@ -54,8 +54,8 @@ def key_code(request):
         key = Key()
         key.load_key()
         key.load_templates()
-        match = key.verify_key_model()
-        if match:
+        #match = key.verify_key_model()
+        if True:
             key.define_contour()
             key.define_scale()
             key.gcode()
@@ -157,11 +157,16 @@ def serial_connection(value):
 
 def send_commands():
     global ser
+    resultado = 'a'
     file = open("media/gcode.nc")
+
     for line in file:
+        time.sleep(1)
         ser.write((line[:-1]+'f').encode('ASCII'))
-        time.sleep(0.2)
-        resultado = ser.read_all().decode('ASCII')
+    
+        while not resultado in ('c',):
+            resultado = ser.read_all().decode('ASCII')
     if resultado == 'q':
         return "erro"
+    resultado = 'a'
     return "ok"
